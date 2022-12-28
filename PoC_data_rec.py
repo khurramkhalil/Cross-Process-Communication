@@ -16,7 +16,7 @@ ctx = zmq.Context()
 sock_data_pub = ctx.socket(zmq.PUB)
 sock_data_pub.bind("tcp://*:5557")
 
-# Getting Feedback from client 'NY' if temperature is high
+# Getting Feedback from client 'GUI state' if temperature is high
 sock_data_sub = ctx.socket(zmq.SUB)
 sock_data_sub.connect("tcp://localhost:5550")
 sock_data_sub.setsockopt_string(zmq.SUBSCRIBE, '')
@@ -32,32 +32,28 @@ while True:
     time.sleep(0.0001)
     zipcode = randrange(10000, 10009)
     temperature = randrange(100, 135)
-    relhumidity = str(randrange(10, 60)) * 100000  # randrange(10, 60)
+    relative_humidity = str(randrange(10, 60)) * 100000  # randrange(10, 60)
     time_record = time.time_ns()
 
     if zipcode == 10001 and temperature > 120:
-        time_.append([f"{zipcode} {time_record} {temperature} {relhumidity}"])
+        time_.append([f"{zipcode} {time_record} {temperature} {relative_humidity}"])
         print("Condition met, expect a reply from GUI")
 
     elif zipcode == 10002 and temperature > 125:
-        time_1.append([f"{zipcode} {time_record} {temperature} {relhumidity}"])
+        time_1.append([f"{zipcode} {time_record} {temperature} {relative_humidity}"])
         print("Condition met, expect an increment in TEWA")
 
     elif zipcode == 10003 and temperature > 130:
-        time_2.append([f"{zipcode} {time_record} {temperature} {relhumidity}"])
+        time_2.append([f"{zipcode} {time_record} {temperature} {relative_humidity}"])
         print("Condition met, expect an increment in Cluster")
 
-    sock_data_pub.send_string(f"{zipcode} {time_record} {temperature} {relhumidity}")
+    sock_data_pub.send_string(f"{zipcode} {time_record} {temperature} {relative_humidity}")
 
-    # For GUI
+    # From GUI
     try:
         string = sock_data_sub.recv_string(flags=zmq.NOBLOCK)
-        zip_filter, pub_time, temp, relhumidity = string.split()
-        rec_.append([pub_time, time.time_ns(), zip_filter, temp, relhumidity])
-
-        # If temperature is greater than 120, stream back to the weather station (data Rec) for concern
-        # if int(temp) > 120:
-        #     print((f"Warning TEMP at state {zip_filter} becomes: {temp}"))
+        zip_filter, pub_time, temp, relative_humidity = string.split()
+        rec_.append([pub_time, time.time_ns(), zip_filter, temp, relative_humidity])
 
     except zmq.Again:
         pass

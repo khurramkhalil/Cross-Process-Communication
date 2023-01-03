@@ -1,8 +1,6 @@
-import sys
-from functools import partial
-import time
 import signal
-
+import time
+from functools import partial
 
 from PyQt6.QtWidgets import (
     QApplication,
@@ -12,15 +10,18 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-
 run = True
+
 
 def signal_handler(signal, frame):
     global run
     print("Stopping")
     run = not run
 
+
 signal.signal(signal.SIGINT, signal_handler)
+
+
 def greet(name):
     global run
     # if message.text():

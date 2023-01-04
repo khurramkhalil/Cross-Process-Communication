@@ -71,7 +71,7 @@ print("Collecting updates from weather server...")
 sock_cluster_sub.connect("tcp://localhost:5557")
 
 # Subscribe to data_rec, default is Cluster, 10003
-zip_filter = sys.argv[1] if len(sys.argv) > 1 else "10003"
+zip_filter = sys.argv[1] if len(sys.argv) > 1 else "1001"
 sock_cluster_sub.setsockopt_string(zmq.SUBSCRIBE, zip_filter)
 
 # Be publisher if temperature is greater than 130

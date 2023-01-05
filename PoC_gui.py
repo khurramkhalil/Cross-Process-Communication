@@ -18,7 +18,7 @@ print("Collecting updates from weather server...")
 sock_gui_sub.connect("tcp://localhost:5557")
 
 # Subscribe to data_rec, default is GUI, 10001
-zip_filter = sys.argv[1] if len(sys.argv) > 1 else "10001"
+zip_filter = sys.argv[1] if len(sys.argv) > 1 else "100"
 sock_gui_sub.setsockopt_string(zmq.SUBSCRIBE, zip_filter)
 
 # Be publisher if temperature is greater than 120
@@ -39,7 +39,7 @@ sock_cluster_sub.setsockopt_string(zmq.SUBSCRIBE, '')
 rec_ = []
 rec_1 = []
 rec_2 = []
-for update_nbr in range(100):
+for update_nbr in range(1000):
     string = sock_gui_sub.recv_string()
     zipcode, pub_time, temperature, relative_humidity = string.split()
     total_temp = int(temperature)

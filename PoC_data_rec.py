@@ -30,7 +30,7 @@ while True:
     if record == 0:
         time.sleep(9)
     time.sleep(0.001)
-    zipcode = randrange(10000, 10009)
+    zipcode = randrange(1000, 1015)
     temperature = randrange(100, 135)
     relative_humidity = str(randrange(10, 60)) # * 100000  # randrange(10, 60)
     time_record = time.time_ns()
@@ -59,7 +59,7 @@ while True:
         pass
 
     record += 1
-    if record == 2000:
+    if record == 20000:
         break
 
 # rr = rec_[0]

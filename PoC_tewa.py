@@ -5,12 +5,12 @@ Created on Tue Dec 20 09:50:58 2022
 @author: pc1
 """
 
+import signal
 import sys
 import time
-import zmq
-import signal
 from functools import partial
 
+import zmq
 from PyQt6.QtWidgets import (
     QApplication,
     QLabel,
@@ -21,17 +21,21 @@ from PyQt6.QtWidgets import (
 
 run = True
 
+
 def signal_handler(signal, frame):
     global run
     print("Stopping")
     run = not run
 
+
 signal.signal(signal.SIGINT, signal_handler)
+
+
 def greet(name):
     global run
     count = 1
     while run:
-        
+
         string = sock_tewa_sub.recv_string()
         zipcode, pub_time, temperature, relative_humidity = string.split()
         # total_temp = int(temperature)
@@ -42,18 +46,19 @@ def greet(name):
             zip_filter, pub_time, CLUSTER, relative_humidity = string.split()
             rec_2.append([pub_time, time.time_ns(), zip_filter, CLUSTER, relative_humidity])
             # print(f"Cluster Feedback: {pub_time} {time.time_ns()} {zip_filter}")
-            
+
             rec_1.append([pub_time, time.time_ns(), zip_filter, temperature, relative_humidity])
             # print(f"From Data Received: {zipcode} {pub_time} {temperature}")
             sock_gui_pub.send_string(f"{zipcode} {pub_time} {temperature} {relative_humidity}")
             print(f"Counted packets {count}")
             count += 1
-                
+
         except zmq.Again:
             pass
-    
+
     run = not run
     print("TEWA Module Stopped")
+
 
 app = QApplication([])
 window = QWidget()
@@ -67,7 +72,6 @@ layout.addWidget(button)
 message = QLabel("")
 layout.addWidget(message)
 window.setLayout(layout)
-
 
 ctx = zmq.Context()
 
@@ -92,13 +96,5 @@ sock_cluster_sub.setsockopt_string(zmq.SUBSCRIBE, '')
 rec_1 = []
 rec_2 = []
 
-
-window.show()    
+window.show()
 sys.exit(app.exec())
-
-
-
-
-
-
-

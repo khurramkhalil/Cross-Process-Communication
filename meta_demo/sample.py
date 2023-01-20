@@ -8,7 +8,7 @@ mt5.initialize()
 
 class MT5:
 
-    def get_data(symbol, n, timeframe=mt5.TIMEFRAME_D1):
+    def get_data(symbol, n, timeframe=mt5.TIMEFRAME_M5):
         """ Function to import the data of the chosen symbol"""
 
         # Initialize the connection if there is not
@@ -41,7 +41,7 @@ class MT5:
             mt5.initialize()
 
         # # Get filling mode
-        # filling_mode = mt5.symbol_info(symbol).filling_mode - 1
+        filling_mode = mt5.symbol_info(symbol).filling_mode + 1
 
         # Take ask price
         ask_price = mt5.symbol_info_tick(symbol).ask
@@ -63,17 +63,12 @@ class MT5:
                 tp = ask_price * (1 + 0.01)
                 price = ask_price
 
-                # Get filling mode
-                filling_mode = mt5.symbol_info(symbol).filling_mode + 1
-
             # Sell order Parameters
             else:
                 type_trade = mt5.ORDER_TYPE_SELL
                 sl = bid_price * (1 + 0.01)
                 tp = bid_price * (1 - 0.01)
                 price = bid_price
-                # Get filling mode
-                filling_mode = mt5.symbol_info(symbol).filling_mode - 1
 
             # Open the trade
             request = {
@@ -231,8 +226,8 @@ import MetaTrader5 as mt5
 
 warnings.filterwarnings("ignore")
 mt5.initialize()
-account = 65659936
-authorized = mt5.login(account, password="ectlvkt3", server="MetaQuotes-Demo")
+account = 65724883
+authorized = mt5.login(account, password="wh1qhrqk", server="MetaQuotes-Demo")
 if authorized:
     # display trading account data 'as is'
     print(mt5.account_info())
@@ -325,7 +320,7 @@ if live:
     print("------------------------------------------------------------------")
 
 info_order = {
-    "EURUSD": ["EURUSD", 1.],
+    "EURUSD": ["EURUSD", 0.5],
     # "AUDCAD": ["AUDCAD", 0.1],
     # "GBPUSD": ["GBPUSD", 0.3]
 }

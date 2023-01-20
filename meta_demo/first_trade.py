@@ -12,8 +12,8 @@ if not mt5.initialize():
     quit()
 
 # now connect to another trading account specifying the password
-account = 65659936
-authorized = mt5.login(account, password="ectlvkt3", server="MetaQuotes-Demo")
+account = 65724883
+authorized = mt5.login(account, password="wh1qhrqk", server="MetaQuotes-Demo")
 if authorized:
     # display trading account data 'as is'
     print(mt5.account_info())
